@@ -36,7 +36,7 @@ protoc -I . --python_out=. dy.proto
 
 ## 安装websocket依赖
 ```bash
-pip install websocket
+pip install websocket-client
 ```
 
 ## 方法列表🚗
