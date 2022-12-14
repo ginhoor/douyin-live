@@ -17,6 +17,9 @@ from dy_pb2 import MemberMessage
 from dy_pb2 import GiftMessage
 from dy_pb2 import ChatMessage
 from dy_pb2 import SocialMessage
+from dy_pb2 import RoomUserSeqMessage
+from dy_pb2 import UpdateFanTicketMessage
+from dy_pb2 import CommonTextMessage
 
 liveRoomId = None
 ttwid = None
@@ -34,31 +37,68 @@ def onMessage(ws: websocket.WebSocketApp, message: bytes):
     # 发送ack包
     if payloadPackage.needAck:
         sendAck(ws, logId, payloadPackage.internalExt)
-    # WebcastGiftMessage
     for msg in payloadPackage.messagesList:
         if msg.method == 'WebcastMatchAgainstScoreMessage':
-            # unPackMatchAgainstScoreMessage(msg.payload)
-            return
+            unPackMatchAgainstScoreMessage(msg.payload)
+            continue
 
         if msg.method == 'WebcastLikeMessage':
-            # unPackWebcastLikeMessage(msg.payload)
-            return
+            unPackWebcastLikeMessage(msg.payload)
+            continue
 
         if msg.method == 'WebcastMemberMessage':
-            # unPackWebcastMemberMessage(msg.payload)
-            return
+            unPackWebcastMemberMessage(msg.payload)
+            continue
         if msg.method == 'WebcastGiftMessage':
-            # unPackWebcastGiftMessage(msg.payload)
-            return
+            unPackWebcastGiftMessage(msg.payload)
+            continue
         if msg.method == 'WebcastChatMessage':
             unPackWebcastChatMessage(msg.payload)
-            return
+            continue
 
         if msg.method == 'WebcastSocialMessage':
-            # unPackWebcastSocialMessage(msg.payload)
-            return
+            unPackWebcastSocialMessage(msg.payload)
+            continue
 
-        # logging.info('[onMessage] [⌛️方法' + msg.method + '等待解析～] [房间Id：' + liveRoomId + ']')
+        if msg.method == 'WebcastRoomUserSeqMessage':
+            unPackWebcastRoomUserSeqMessage(msg.payload)
+            continue
+
+        if msg.method == 'WebcastUpdateFanTicketMessage':
+            unPackWebcastUpdateFanTicketMessage(msg.payload)
+            continue
+
+        if msg.method == 'WebcastCommonTextMessage':
+            unPackWebcastCommonTextMessage(msg.payload)
+            continue
+
+        logging.info('[onMessage] [⌛️方法' + msg.method + '等待解析～] [房间Id：' + liveRoomId + ']')
+
+
+def unPackWebcastCommonTextMessage(data):
+    commonTextMessage = CommonTextMessage()
+    commonTextMessage.ParseFromString(data)
+    data = json_format.MessageToDict(commonTextMessage, preserving_proto_field_name=True)
+    log = json.dumps(data, ensure_ascii=False)
+    logging.info('[unPackWebcastCommonTextMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    return data
+
+def unPackWebcastUpdateFanTicketMessage(data):
+    updateFanTicketMessage = UpdateFanTicketMessage()
+    updateFanTicketMessage.ParseFromString(data)
+    data = json_format.MessageToDict(updateFanTicketMessage, preserving_proto_field_name=True)
+    log = json.dumps(data, ensure_ascii=False)
+    logging.info('[unPackWebcastUpdateFanTicketMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    return data
+
+
+def unPackWebcastRoomUserSeqMessage(data):
+    roomUserSeqMessage = RoomUserSeqMessage()
+    roomUserSeqMessage.ParseFromString(data)
+    data = json_format.MessageToDict(roomUserSeqMessage, preserving_proto_field_name=True)
+    log = json.dumps(data, ensure_ascii=False)
+    logging.info('[unPackWebcastRoomUserSeqMessage] [➕直播间关注消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    return data
 
 
 def unPackWebcastSocialMessage(data):
@@ -75,7 +115,6 @@ def unPackWebcastChatMessage(data):
     chatMessage = ChatMessage()
     chatMessage.ParseFromString(data)
     data = json_format.MessageToDict(chatMessage, preserving_proto_field_name=True)
-    # log = json.dumps(data, ensure_ascii=False)
     logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + data['content'])
     # logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
@@ -154,7 +193,7 @@ def ping(ws):
         obj.payloadType = 'hb'
         data = obj.SerializeToString()
         ws.send(data, websocket.ABNF.OPCODE_BINARY)
-        logging.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
+        # logging.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
         time.sleep(10)
 
 
