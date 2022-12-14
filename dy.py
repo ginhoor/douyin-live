@@ -169,7 +169,7 @@ def sendAck(ws, logId, internalExt):
     obj.payloadType = sdata
     data = obj.SerializeToString()
     ws.send(data, websocket.ABNF.OPCODE_BINARY)
-    # logging.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle +'】')
+    logging.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle +'】')
 
 
 def onError(ws, error):
@@ -193,7 +193,7 @@ def ping(ws):
         obj.payloadType = 'hb'
         data = obj.SerializeToString()
         ws.send(data, websocket.ABNF.OPCODE_BINARY)
-        # logging.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
+        logging.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
         time.sleep(10)
 
 
