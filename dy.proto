@@ -53,6 +53,7 @@ message ChatMessage {
   Text rtfContent = 22;
 }
 
+
 message LandscapeAreaCommon {
   bool showHead = 1;
   bool showNickname = 2;
@@ -448,7 +449,7 @@ message User {
   string ShareQrcodeUri = 19;
   uint32 IncomeSharePercent = 20;
   repeated Image BadgeImageList = 21;
-//  FollowInfo FollowInfo = 22;
+  FollowInfo FollowInfo = 22;
 //  PayGrade PayGrade = 23;
 //  FansClub FansClub = 24;
 //  Border Border = 25;
@@ -456,8 +457,23 @@ message User {
   Image AvatarBorder = 27;
   Image Medal = 28;
   repeated Image RealTimeIconsList = 29;
+  string displayId = 38;
+  string secUid = 46;
+  uint64 fanTicketCount = 1022;
+  string idStr = 1028;
+  uint32 ageRange = 1045;
 }
 
+message FollowInfo {
+  uint64 followingCount = 1;
+  uint64 followerCount = 2;
+  uint64 followStatus = 3;
+  uint64 pushStatus = 4;
+  string remarkName = 5;
+  string followerCountStr = 6;
+  string followingCountStr = 7;
+
+}
 message Image {
   repeated string urlListList = 1;
   string uri = 2;
@@ -493,6 +509,64 @@ message PushFrame {
   string payloadType = 7;
   bytes payload = 8;
 
+}
+
+message kk {
+  uint32 k=14;
+}
+
+message SendMessageBody {
+  string conversationId = 1;
+  uint32 conversationType = 2;
+  uint64 conversationShortId = 3;
+  string content = 4;
+  repeated ExtList ext = 5;
+  uint32 messageType = 6;
+  string ticket = 7;
+  string clientMessageId = 8;
+
+}
+
+message ExtList {
+  string key = 1;
+  string value = 2;
+}
+
+message Rsp{
+  int32 a = 1;
+  int32 b = 2;
+  int32 c = 3;
+  string d = 4;
+  int32 e = 5;
+  message F {
+    uint64 q1 = 1;
+    uint64 q3 = 3;
+    string q4 = 4;
+    uint64 q5 = 5;
+  }
+  F f = 6;
+  string g = 7;
+  uint64 h = 10;
+  uint64 i = 11;
+  uint64 j = 13;
+}
+
+message PreMessage {
+  uint32 cmd = 1;
+  uint32 sequenceId = 2;
+  string sdkVersion = 3;
+  string token = 4;
+  uint32 refer = 5;
+  uint32 inboxType = 6;
+  string buildNumber = 7;
+  SendMessageBody sendMessageBody = 8;
+  // 字段名待定
+  string aa = 9;
+  string devicePlatform = 11;
+  repeated HeadersList headers = 15;
+  uint32 authType = 18;
+  string biz = 21;
+  string access = 22;
 }
 
 message HeadersList {
