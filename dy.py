@@ -81,7 +81,7 @@ def unPackWebcastCommonTextMessage(data):
     commonTextMessage.ParseFromString(data)
     data = json_format.MessageToDict(commonTextMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastCommonTextMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastCommonTextMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -90,7 +90,7 @@ def unPackWebcastUpdateFanTicketMessage(data):
     updateFanTicketMessage.ParseFromString(data)
     data = json_format.MessageToDict(updateFanTicketMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastUpdateFanTicketMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastUpdateFanTicketMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -108,7 +108,7 @@ def unPackWebcastSocialMessage(data):
     socialMessage.ParseFromString(data)
     data = json_format.MessageToDict(socialMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastSocialMessage] [➕直播间关注消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastSocialMessage] [➕直播间关注消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -118,7 +118,7 @@ def unPackWebcastChatMessage(data):
     chatMessage.ParseFromString(data)
     data = json_format.MessageToDict(chatMessage, preserving_proto_field_name=True)
     logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + data['content'])
-    logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + json.dumps(data))
+    # logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + json.dumps(data))
     return data
 
 
@@ -128,7 +128,7 @@ def unPackWebcastGiftMessage(data):
     giftMessage.ParseFromString(data)
     data = json_format.MessageToDict(giftMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastGiftMessage] [🎁直播间礼物消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastGiftMessage] [🎁直播间礼物消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -138,7 +138,7 @@ def unPackWebcastMemberMessage(data):
     memberMessage.ParseFromString(data)
     data = json_format.MessageToDict(memberMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastMemberMessage] [🚹🚺直播间成员加入消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastMemberMessage] [🚹🚺直播间成员加入消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -148,7 +148,7 @@ def unPackWebcastLikeMessage(data):
     likeMessage.ParseFromString(data)
     data = json_format.MessageToDict(likeMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastLikeMessage] [👍直播间点赞消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackWebcastLikeMessage] [👍直播间点赞消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -158,7 +158,7 @@ def unPackMatchAgainstScoreMessage(data):
     matchAgainstScoreMessage.ParseFromString(data)
     data = json_format.MessageToDict(matchAgainstScoreMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackMatchAgainstScoreMessage] [🤷不知道是啥的消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    # logging.info('[unPackMatchAgainstScoreMessage] [🤷不知道是啥的消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -170,7 +170,7 @@ def sendAck(ws, logId, internalExt):
     obj.payloadType = internalExt
     data = obj.SerializeToString()
     ws.send(data, websocket.ABNF.OPCODE_BINARY)
-    logging.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle +'】')
+    # logging.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
 
 
 def onError(ws, error):
@@ -201,9 +201,9 @@ def wssServerStart(roomId):
     global liveRoomId
     liveRoomId = roomId
     websocket.enableTrace(False)
-    webSocketUrl = "wss://webcast3-ws-web-hl.douyin.com/webcast/im/push/v2/?app_name=douyin_web&version_code=180800&webcast_sdk_version=1.3.0&update_version_code=1.3.0&compress=gzip&internal_ext=internal_src:dim|wss_push_room_id:" + liveRoomId + "|wss_push_did:" + liveRoomId + "|dim_log_id:2022122306295965382308B5DCD45D07F8|fetch_time:1671748199438|seq:1|wss_info:0-1671748199438-0-0|wrds_kvs:WebcastRoomRankMessage-1671748147622091132_WebcastRoomStatsMessage-1671748195537766499&cursor=t-1671748199438_r-1_d-1_u-1_h-1&host=https://live.douyin.com&aid=6383&live_id=1&did_rule=3&debug=false&endpoint=live_pc&support_wrds=1&im_path=/webcast/im/fetch/&device_platform=web&cookie_enabled=true&screen_width=1440&screen_height=900&browser_language=zh&browser_platform=MacIntel&browser_name=Mozilla&browser_version=5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/108.0.0.0%20Safari/537.36&browser_online=true&tz_name=Asia/Shanghai&identity=audience&room_id=" +liveRoomId + "&heartbeatDuration=0"
+    webSocketUrl = 'wss://webcast3-ws-web-lq.douyin.com/webcast/im/push/v2/?app_name=douyin_web&version_code=180800&webcast_sdk_version=1.3.0&update_version_code=1.3.0&compress=gzip&internal_ext=internal_src:dim|wss_push_room_id:'+liveRoomId+'|wss_push_did:'+liveRoomId+'|dim_log_id:202302171547011A160A7BAA76660E13ED|fetch_time:1676620021641|seq:1|wss_info:0-1676620021641-0-0|wrds_kvs:WebcastRoomStatsMessage-1676620020691146024_WebcastRoomRankMessage-1676619972726895075_AudienceGiftSyncData-1676619980834317696_HighlightContainerSyncData-2&cursor=t-1676620021641_r-1_d-1_u-1_h-1&host=https://live.douyin.com&aid=6383&live_id=1&did_rule=3&debug=false&endpoint=live_pc&support_wrds=1&im_path=/webcast/im/fetch/&user_unique_id='+liveRoomId+'&device_platform=web&cookie_enabled=true&screen_width=1440&screen_height=900&browser_language=zh&browser_platform=MacIntel&browser_name=Mozilla&browser_version=5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/110.0.0.0%20Safari/537.36&browser_online=true&tz_name=Asia/Shanghai&identity=audience&room_id='+liveRoomId+'&heartbeatDuration=0&signature=Rk7kMWh+wzXKrKP2'
     h = {
-        'cookie': "ttwid="+ttwid,
+        'cookie': "ttwid=" + ttwid,
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
     }
     # 创建一个长连接
@@ -234,6 +234,39 @@ def parseLiveRoomUrl(url):
     liveRoomId = roomStore['roomInfo']['roomId']
     liveRoomTitle = roomStore['roomInfo']['room']['title']
     wssServerStart(liveRoomId)
+
+
+def test():
+    url = "https://www.douyin.com/aweme/v1/web/commit/follow/user/?device_platform=webapp&aid=6383&channel=channel_pc_web&pc_client_type=1&version_code=170400&version_name=17.4.0&cookie_enabled=true&screen_width=1440&screen_height=900&browser_language=zh&browser_platform=MacIntel&browser_name=Chrome&browser_version=109.0.0.0&browser_online=true&engine_name=Blink&engine_version=109.0.0.0&os_name=Mac+OS&os_version=10.15.7&cpu_core_num=8&device_memory=8&platform=PC&downlink=10&effective_type=4g&round_trip_time=50&webid=7188358506633528844&msToken=6j75IbD0uth58uE0p2svIf3-bGlzkqLnJ34RfGkr8Ooxgos99KHfw-4HzlJ26GI6C3uTwDUUIthFI0wUocJy2ZAMkpyPrUgGFgcshHRO3vw_kBc9yiZ-4EbErjwp8FI=&X-Bogus=DFSzswVYdOs9-MIISZ-yup7TlqtU"
+    h = {
+        "accept": "application/json, text/plain, */*",
+        # "accept-encoding": "gzip, deflate, br",
+        # "accept-language": "zh,en-GB;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6",
+        # "content-length": "26",
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "cookie": "__ac_nonce=063c22e0b00ef2187712a; __ac_signature=_02B4Z6wo00f01UZsilwAAIDC0rrRUTr27elGTI7AADJcqjRe1hQOZ"
+                  ".K4Q4FmO9daZqxwlf.5k4RomG9GZZgMXO3CvtvKJiy9txGxo4HWdJhcwlVYhBiKSGhWCrULSjQEPlsLZ8LgciLILIZO8f; "
+                  "ttwid=1%7Cw5daZw41FpoZMR-XIJc-J_4yVhjVtBUBWUPO-v6khXo%7C1673670155"
+                  "%7Cd796439337e51fc553cfb64d79ef412b84b3eef18e9e19ebaa1287a829b90db8; douyin.com; "
+                  "passport_csrf_token=955106f18f323068c601a6918c27747d; "
+                  "passport_csrf_token_default=955106f18f323068c601a6918c27747d; "
+                  "s_v_web_id=verify_lcvfzyv4_BZabwp7p_r58g_4G5z_8KHs_lDuazCJCZ9uB; "
+                  "passport_assist_user"
+                  "=Cj2FisA1wsU1M6ZAOUfBxA5tt48uEnnpcfN8dtT3oivxC3hjFxm0iQwLvZkXjoCnZas0ias8qelCHfDmIZJ5GkgKPEal_vGBVAKPt3vk_68vkfwzRBgsf8APM87d_iaEiBj6_B9X0Gj7vjvTHA_1A0fF9m3QYysg3NS7vbf-ihDlxaYNGImv1lQiAQNaHWg4; n_mh=bUxOCHzZv5szT8QIHfxmgnjoVlZQ1kn7aM-ZW6ndDKY; sso_uid_tt=e1e48ca5f945784a59c3174e16176a61; sso_uid_tt_ss=e1e48ca5f945784a59c3174e16176a61; toutiao_sso_user=fba93355178fb80aafc02d05bfcd0a5c; toutiao_sso_user_ss=fba93355178fb80aafc02d05bfcd0a5c; sid_ucp_sso_v1=1.0.0-KDM0OWJmNzI2ZDQ1NjFmODJkMTY4Y2Q2MDAzMTIzY2FkMTc1YWUwYmQKHQik8Iy7gQMQ7tyIngYY7zEgDDCYxPfbBTgGQPQHGgJsZiIgZmJhOTMzNTUxNzhmYjgwYWFmYzAyZDA1YmZjZDBhNWM; ssid_ucp_sso_v1=1.0.0-KDM0OWJmNzI2ZDQ1NjFmODJkMTY4Y2Q2MDAzMTIzY2FkMTc1YWUwYmQKHQik8Iy7gQMQ7tyIngYY7zEgDDCYxPfbBTgGQPQHGgJsZiIgZmJhOTMzNTUxNzhmYjgwYWFmYzAyZDA1YmZjZDBhNWM; odin_tt=8547fef56c59daf11b0c15312d499833a2be72189dd6aad256dc07c950b8880c52ad37e717a99de93cc971ad3d80d88ffc1b4e6a10be0fd4f05d46ba29e91ac5; passport_auth_status=6929cca1c9119873a9d7fa528ccd5f37%2C; passport_auth_status_ss=6929cca1c9119873a9d7fa528ccd5f37%2C; uid_tt=8c0899f7528059e847f7eddad4210e5c; uid_tt_ss=8c0899f7528059e847f7eddad4210e5c; sid_tt=6c5a7be3caf51c935494a12b4f1c5c13; sessionid=6c5a7be3caf51c935494a12b4f1c5c13; sessionid_ss=6c5a7be3caf51c935494a12b4f1c5c13; LOGIN_STATUS=1; store-region=cn-hn; store-region-src=uid; sid_guard=6c5a7be3caf51c935494a12b4f1c5c13%7C1673670258%7C5183996%7CWed%2C+15-Mar-2023+04%3A24%3A14+GMT; sid_ucp_v1=1.0.0-KGZmOThhNTZlMThiOTEzMTI2MWI0MDIxZGM5MDUyNjVmZmVkMzVhMTgKFwik8Iy7gQMQ8tyIngYY7zEgDDgGQPQHGgJsZiIgNmM1YTdiZTNjYWY1MWM5MzU0OTRhMTJiNGYxYzVjMTM; ssid_ucp_v1=1.0.0-KGZmOThhNTZlMThiOTEzMTI2MWI0MDIxZGM5MDUyNjVmZmVkMzVhMTgKFwik8Iy7gQMQ8tyIngYY7zEgDDgGQPQHGgJsZiIgNmM1YTdiZTNjYWY1MWM5MzU0OTRhMTJiNGYxYzVjMTM; csrf_session_id=f8b3bae210355efd72d7b596b8d59786; tt_scid=yrq-tjQaXEaPz4kTP9WpqNwOnqVy13KMI.snGi6wnZp8P1hduQmhbtqsTOyIhz.O0bd1; download_guide=%223%2F20230114%22; VIDEO_FILTER_MEMO_SELECT=%7B%22expireTime%22%3A1674275671220%2C%22type%22%3A1%7D; strategyABtestKey=%221673670871.396%22; FOLLOW_NUMBER_YELLOW_POINT_INFO=%22MS4wLjABAAAAlc42G0Nktrm_CVQMfASabMRnI_6GlL2br1i7a8yqTEI%2F1673712000000%2F0%2F1673670871480%2F0%22; home_can_add_dy_2_desktop=%221%22; passport_fe_beating_status=true; msToken=veZvf1xerEu8qj_1IHeP6Tce5JyHlTLZf_YVSJCj5moDg72Q0821Vcqo4ylUrBP75wlGO2xO22kVG9fEsZvWcx6L6nUPhL6LFf6TtpXznJMEA7riXCgfInQgv70a3Go=; msToken=6j75IbD0uth58uE0p2svIf3-bGlzkqLnJ34RfGkr8Ooxgos99KHfw-4HzlJ26GI6C3uTwDUUIthFI0wUocJy2ZAMkpyPrUgGFgcshHRO3vw_kBc9yiZ-4EbErjwp8FI=",
+        "origin": "https://www.douyin.com",
+        "referer": "https://www.douyin.com/",
+        # "sec-ch-ua": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"",
+        # "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+        "x-secsdk-csrf-token": "000100000001a4af956d5ea10b016b19ba5c287191937c2093fc6b603acc6ee5bed3a6354333173a12ca9498806f"
+    }
+    data = "type=1&user_id=93865343726"
+    res = requests.post(url=url, data=data, headers=h).json()
+    print(res)
 
 
 # 十六进制字符串转protobuf格式 （用于快手网页websocket调试分析包体结构）
