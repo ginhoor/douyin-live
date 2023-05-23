@@ -6,7 +6,7 @@
 | v1.1 | 抖音协议更新&增加用户信息字段                                                                      | ✅        | 2023.01.13 |
 | v1.2 | 修复Go服务端数据补全问题                                                                         | ✅        | 2023.02.01 |
 | v1.3 | 重构Go快手抖音服务端（增加代理IP传参,废弃PHP版本服务端，补全接入文档说明，增加`哔哩哔哩｜Bilibili`API接口【点赞、评论、分享、收藏、投币】）    | ✅        | 2023.02.15 |
-| v1.4 | 升级抖音协议                                                                              | 进行中... ⏰ |
+| v1.4 | 升级抖音协议                                                                              | 进行中... ⏰ | 2023.05.23|
 
 ## [快手请移步👉](https://github.com/YunzhiYike/kuaishou-live)
 ## [bilibili接入文档👉](https://github.com/YunzhiYike/bilibili-openAPi)
