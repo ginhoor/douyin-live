@@ -9,7 +9,15 @@
 | v1.4 | 升级抖音协议                                                                              | 进行中... ⏰ | 2023.05.23|
 
 ## [快手请移步👉](https://github.com/YunzhiYike/kuaishou-live)
+
 ## [bilibili接入文档👉](https://github.com/YunzhiYike/bilibili-openAPi)
+
+## 🪧 学习交流&兼职
+| 群名称    | 传送门                                       |
+|--------|-------------------------------------------|
+| 代刷社区| [✈️](https://t.me/+RqiGy8UPvF82Mjgx)  |
+| Js逆向交流群| [✈️](https://t.me/+vXOgs2SEJW4wZjAx)      |
+| 软件兼职任务发布总群| [✈️](https://t.me/+DQheyY3sEEg0OWVh)      |
 
 ## 🧪私有化抖音&快手弹幕服务
 > 背景：考虑到开发语言各有不同所以对协议的拆解二开需要花费很多的时间，亦或者说对于萌新同学来讲上手程度太高
