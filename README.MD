@@ -8,6 +8,9 @@
 | v1.3 | 重构Go快手抖音服务端（增加代理IP传参,废弃PHP版本服务端，补全接入文档说明，增加`哔哩哔哩｜Bilibili`API接口【点赞、评论、分享、收藏、投币】）    | ✅ | 2023.02.15 |
 | v1.4 | 升级抖音协议                                                                              | ✅ | 2023.05.30 |
 
+
+## [云获客API开发文档 🐮](https://console-docs.apipost.cn/preview/bdf25a21bc341bab/3dfc2f784646d7f7?target_id=99163fb7-9603-4aaf-b1e1-e2bcf7f444e3)
+
 ## [快手请移步👉](https://github.com/YunzhiYike/kuaishou-live)
 
 ## [bilibili接入文档👉](https://github.com/YunzhiYike/bilibili-openAPi)
