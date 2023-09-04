@@ -26,7 +26,7 @@ from dy_pb2 import ProductChangeMessage
 liveRoomId = None
 ttwid = None
 roomStore = None
-liveRoomTitle = None
+liveRoomTitle = ''
 
 
 
@@ -238,13 +238,9 @@ def parseLiveRoomUrl(url):
     data = res.cookies.get_dict()
     ttwid = data['ttwid']
     res = res.text
-    res = re.search(r'<script id="RENDER_DATA" type="application/json">(.*?)</script>', res)
+    res = re.search(r'roomId\\":\\"(\d+)\\"', res)
     res = res.group(1)
-    res = urllib.parse.unquote(res, encoding='utf-8', errors='replace')
-    res = json.loads(res)
-    roomStore = res['app']['initialState']['roomStore']
-    liveRoomId = roomStore['roomInfo']['roomId']
-    liveRoomTitle = roomStore['roomInfo']['room']['title']
+    liveRoomId = res
     wssServerStart(liveRoomId)
 
 
