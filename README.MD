@@ -67,8 +67,9 @@
 ### 抖音手机直播链接转web 📱
 #### API地址
 >http://110.42.149.60:3000/api/v1/dy/roomInfo?url=手机直播链接
-#### DEMO（测试调用栗子）
->http://110.42.149.60:3000/api/v1/dy/roomInfo?url=https://v.douyin.com/ie18AEwE/
+#### DEMO（测试调用栗子）GET
+>http://110.42.149.60:3000/api/v1/dy/roomInfo?url=https://v.douyin.com/ie18AEwE/&ua=Mozilla/5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/116.0.0.0%20Safari/537.36
+> 需传url和ua 
 #### 返回结构说明
 ```json
 {
