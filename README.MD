@@ -21,6 +21,8 @@
 
 ## [快手请移步👉](https://github.com/YunzhiYike/kuaishou-live)
 
+## [B站请移步👉](https://github.com/YunzhiYike/bilibili-live)
+
 ## [bilibili接入文档👉](https://github.com/YunzhiYike/bilibili-openAPi)
 
 ## 🪧 学习交流&兼职
