@@ -6,6 +6,7 @@ import logging
 import re
 import time
 import requests
+import os
 import websocket
 import urllib
 from protobuf_inspector.types import StandardParser
@@ -27,9 +28,6 @@ liveRoomId = None
 ttwid = None
 roomStore = None
 liveRoomTitle = ''
-
-
-
 
 def onMessage(ws: websocket.WebSocketApp, message: bytes):
     wssPackage = PushFrame()
@@ -79,7 +77,7 @@ def onMessage(ws: websocket.WebSocketApp, message: bytes):
             WebcastProductChangeMessage(msg.payload)
             continue
 
-        logging.info('[onMessage] [⌛️方法' + msg.method + '等待解析～] [房间Id：' + liveRoomId + ']')
+        logger.info('[onMessage] [⌛️方法' + msg.method + '等待解析～] [房间Id：' + liveRoomId + ']')
 
 
 def unPackWebcastCommonTextMessage(data):
@@ -87,7 +85,7 @@ def unPackWebcastCommonTextMessage(data):
     commonTextMessage.ParseFromString(data)
     data = json_format.MessageToDict(commonTextMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastCommonTextMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastCommonTextMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 def WebcastProductChangeMessage(data):
@@ -95,7 +93,7 @@ def WebcastProductChangeMessage(data):
     commonTextMessage.ParseFromString(data)
     data = json_format.MessageToDict(commonTextMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[WebcastProductChangeMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[WebcastProductChangeMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
 
 
 def unPackWebcastUpdateFanTicketMessage(data):
@@ -103,7 +101,7 @@ def unPackWebcastUpdateFanTicketMessage(data):
     updateFanTicketMessage.ParseFromString(data)
     data = json_format.MessageToDict(updateFanTicketMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    # logging.info('[unPackWebcastUpdateFanTicketMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastUpdateFanTicketMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -112,7 +110,7 @@ def unPackWebcastRoomUserSeqMessage(data):
     roomUserSeqMessage.ParseFromString(data)
     data = json_format.MessageToDict(roomUserSeqMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastRoomUserSeqMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastRoomUserSeqMessage] [] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -121,7 +119,7 @@ def unPackWebcastSocialMessage(data):
     socialMessage.ParseFromString(data)
     data = json_format.MessageToDict(socialMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastSocialMessage] [➕直播间关注消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastSocialMessage] [➕直播间关注消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -130,7 +128,8 @@ def unPackWebcastChatMessage(data):
     chatMessage = ChatMessage()
     chatMessage.ParseFromString(data)
     data = json_format.MessageToDict(chatMessage, preserving_proto_field_name=True)
-    logging.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + data['content'])
+    # logger.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + data['content'])
+    logger.info('[unPackWebcastChatMessage] [📧直播间弹幕消息] [房间Id：' + liveRoomId + '] ｜ ' + data)
     return data
 
 
@@ -140,7 +139,7 @@ def unPackWebcastGiftMessage(data):
     giftMessage.ParseFromString(data)
     data = json_format.MessageToDict(giftMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastGiftMessage] [🎁直播间礼物消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastGiftMessage] [🎁直播间礼物消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -150,7 +149,7 @@ def unPackWebcastMemberMessage(data):
     memberMessage.ParseFromString(data)
     data = json_format.MessageToDict(memberMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastMemberMessage] [🚹🚺直播间成员加入消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastMemberMessage] [🚹🚺直播间成员加入消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -160,7 +159,7 @@ def unPackWebcastLikeMessage(data):
     likeMessage.ParseFromString(data)
     data = json_format.MessageToDict(likeMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackWebcastLikeMessage] [👍直播间点赞消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackWebcastLikeMessage] [👍直播间点赞消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -170,7 +169,7 @@ def unPackMatchAgainstScoreMessage(data):
     matchAgainstScoreMessage.ParseFromString(data)
     data = json_format.MessageToDict(matchAgainstScoreMessage, preserving_proto_field_name=True)
     log = json.dumps(data, ensure_ascii=False)
-    logging.info('[unPackMatchAgainstScoreMessage] [🤷不知道是啥的消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
+    logger.info('[unPackMatchAgainstScoreMessage] [🤷不知道是啥的消息] [房间Id：' + liveRoomId + '] ｜ ' + log)
     return data
 
 
@@ -182,7 +181,7 @@ def sendAck(ws, logId, internalExt):
     obj.payloadType = internalExt
     data = obj.SerializeToString()
     ws.send(data, websocket.ABNF.OPCODE_BINARY)
-    logging.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
+    logger.info('[sendAck] [🌟发送Ack] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
 
 
 def onError(ws, error):
@@ -190,12 +189,12 @@ def onError(ws, error):
 
 
 def onClose(ws, a, b):
-    logging.info('[onClose] [webSocket Close事件] [房间Id：' + liveRoomId + ']')
+    logger.info('[onClose] [webSocket Close事件] [房间Id：' + liveRoomId + ']')
 
 
 def onOpen(ws):
     _thread.start_new_thread(ping, (ws,))
-    logging.info('[onOpen] [webSocket Open事件] [房间Id：' + liveRoomId + ']')
+    logger.info('[onOpen] [webSocket Open事件] [房间Id：' + liveRoomId + ']')
 
 
 # 发送ping心跳包
@@ -205,7 +204,7 @@ def ping(ws):
         obj.payloadType = 'hb'
         data = obj.SerializeToString()
         ws.send(data, websocket.ABNF.OPCODE_BINARY)
-        logging.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
+        logger.info('[ping] [💗发送ping心跳] [房间Id：' + liveRoomId + '] ====> 房间🏖标题【' + liveRoomTitle + '】')
         time.sleep(10)
 
 
@@ -227,6 +226,22 @@ def wssServerStart(roomId):
     ws.run_forever()
 
 
+def setup_logger(liveRoomId):
+    # 创建一个logger
+    global logger
+    logger = logging.getLogger('直播间: %s' % str(liveRoomId))
+    logger.setLevel(logging.INFO)
+    # 创建一个handler，用于写入日志文件
+    if not os.path.exists("./log"):
+        os.makedirs("./log")
+    fh = logging.FileHandler(f"./log/{liveRoomId}.log", encoding="utf-8-sig", mode="a")
+    fh.setLevel(logging.INFO)
+    # 定义handler的输出格式
+    formatter = logging.Formatter('%(asctime)s - %(message)s')
+    fh.setFormatter(formatter)
+    # 给logger添加handler
+    logger.addHandler(fh)
+
 def parseLiveRoomUrl(url):
     h = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -241,6 +256,7 @@ def parseLiveRoomUrl(url):
     res = re.search(r'roomId\\":\\"(\d+)\\"', res)
     res = res.group(1)
     liveRoomId = res
+    setup_logger(liveRoomId)
     wssServerStart(liveRoomId)
 
 
